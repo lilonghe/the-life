@@ -34,6 +34,17 @@ module.exports.login = async (request, reply) => {
         wxOpenId: res.data.openid,
       });
       isSignUp = true;
+      // 插入示例数据
+      await Event.create({
+        title: '大学毕业啦！(长按可删除)',
+        happenTime: '2017-02-14',
+        userId: user.id
+      })
+      await Event.create({
+        title: '第一次使用“浮生记”',
+        happenTime: new Date(),
+        userId: user.id
+      })
     }
     const token = uuid.v4();
     await redis.set(token, JSON.stringify(user), 'EX', 28800);
