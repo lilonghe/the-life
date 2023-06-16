@@ -36,11 +36,33 @@ const Event = sequelize.define('event', {
   happenTime: {
     type: DataTypes.DATE
   },
+  userId: {
+    type: DataTypes.UUID
+  },
 }, { tableName: 'event', paranoid: true });
 Event.sync()
+
+const Token = sequelize.define('token', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  token: {
+    type: DataTypes.STRING
+  },
+  userId: {
+    type: DataTypes.STRING,
+  },
+  platform: {
+    type: DataTypes.STRING,
+  }
+}, { tableName: 'token', paranoid: true });
+Token.sync()
 
 module.exports = {
   User,
   Event,
   sequelize,
+  Token,
 }

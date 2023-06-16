@@ -1,4 +1,3 @@
-import { Component } from 'react'
 import './app.less'
 import { ConfigProvider } from '@nutui/nutui-react-taro'
 

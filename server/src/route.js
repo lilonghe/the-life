@@ -1,6 +1,6 @@
 const { configService } = require("./utils");
 const axios = require("axios");
-const { User, Event } = require("./model");
+const { User, Event, Token } = require("./model");
 const uuid = require("uuid");
 const { fastify } = require('./utils')
 
@@ -52,7 +52,7 @@ module.exports.login = async (request, reply) => {
 
 module.exports.findAllEvent = async (req) => {
   const user = fastify.requestContext.get('user');
-  const list = await Thing.findAll({ where: { userId: user.id }, order: [['createdAt', 'desc']] })
+  const list = await Event.findAll({ where: { userId: user.id }, order: [['happenTime', 'desc']] })
   return list
 }
 
@@ -60,24 +60,24 @@ module.exports.createEvent = async (req) => {
   const user = fastify.requestContext.get('user');
   const event = req.body
   event.userId = user.id
-  const res = await Event.create(thing)
+  const res = await Event.create(event)
   return res
 }
 
 module.exports.updateEvent = async (req) => {
   const user = fastify.requestContext.get('user');
-  const thing = req.body
+  const event = req.body
 
-  const oldEvent = await Event.findOne({ where: { id: thing.id, userId: user.id } });
-  if (!oldThing) {
+  const oldEvent = await Event.findOne({ where: { id: event.id, userId: user.id } });
+  if (!oldEvent) {
     return { message: '无效的信息' }
   }
 
-  const res = await Event.update(event, { where: { id: thing.id }})
+  const res = await Event.update(event, { where: { id: oldEvent.id }})
   return res
 }
 
-module.exports.deleteThing = async (req) => {
+module.exports.deleteEvent = async (req) => {
   const user = fastify.requestContext.get('user');
   const id = req.params['id']
   const res = await Event.findOne({ where: { id } })

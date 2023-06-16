@@ -2,9 +2,9 @@
   "miniprogramRoot": "./",
   "projectname": "client",
   "description": "",
-  "appid": "touristappid",
+  "appid": "wx9e97cfd64ca54ad8",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "postcss": false,
     "minified": false

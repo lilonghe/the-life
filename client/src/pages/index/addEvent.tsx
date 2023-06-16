@@ -1,6 +1,8 @@
 import { Button, Overlay, Form, Input, DatePicker } from '@nutui/nutui-react-taro';
 import { View } from '@tarojs/components';
 import { useState } from 'react';
+import { createEvent } from '../../services';
+import { hideLoading, showLoading, showToast } from '../../utils';
 
 const WrapperStyle = {
   display: 'flex',
@@ -32,10 +34,15 @@ const AddEvent = ({ visible = false, onCancel, onOk }) => {
   const [showTimePicker, setShowTimePicker] = useState(false)
   const [form] = Form.useForm()
 
-  const handleSubmit = (values) => {
-    console.log(values)
-    form.resetFields()
-    onOk()
+  const handleSubmit = async (values) => {
+    showLoading()
+    const res = await createEvent(values)
+    hideLoading()
+    if (res.data) {
+      showToast('添加成功')
+      form.resetFields()
+      onOk()
+    }
   }
 
   return <Overlay visible={visible}>
@@ -72,6 +79,8 @@ const AddEvent = ({ visible = false, onCancel, onOk }) => {
             visible={showTimePicker}
             type="datetime"
             placeholder='选择发生时间'
+            startDate={new Date(1949, 1, 1)}
+            defaultValue={new Date()}
             onClose={() => setShowTimePicker(false)}
             onConfirm={(values) => {
               const date = values.slice(0, 3).map(item => item.value).join('-');
