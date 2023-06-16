@@ -1,0 +1,24 @@
+{
+  "name": "manage-thing-server",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {},
+  "dependencies": {
+    "@fastify/cors": "^8.2.1",
+    "@fastify/mysql": "^4.1.0",
+    "@fastify/redis": "^6.1.0",
+    "@fastify/request-context": "^4.2.0",
+    "axios": "^1.2.3",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.11.0",
+    "mysql2": "^3.0.1",
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
+  }
+}
