@@ -16,6 +16,7 @@ export default async function request (url: string, options?: IRequestOptions) {
     header: {
       'content-type': 'application/json',
       token: Taro.getApp().token,
+      platform: Taro.getEnv(),
     }
   }).then(res => {
     if (res.data?.message) {

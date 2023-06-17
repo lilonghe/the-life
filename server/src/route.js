@@ -21,17 +21,29 @@ module.exports.login = async (request, reply) => {
     }
   }
 
-  const appid = configService.get('WX_APPID');
-  const secret = configService.get('WX_APPSECRET');
-  const res = await axios.get(
-    `${configService.get('WX_BASEURL')}/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
-  );
+  const platform = request.headers['platform']
+  let appid, secret, res;
+  if (platform === 'QQ') {
+    appid = configService.get('QQ_APPID');
+    secret = configService.get('QQ_APPSECRET');
+    res = await axios.get(
+      `${configService.get('QQ_BASEURL')}/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
+    );
+  } else {
+    appid = configService.get('WX_APPID');
+    secret = configService.get('WX_APPSECRET');
+    res = await axios.get(
+      `${configService.get('WX_BASEURL')}/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
+    );
+  }
+  
   if (res.data?.openid) {
     let user = await User.findOne({ where: { wxOpenId: res.data.openid }});
     let isSignUp = false;
     if (!user) {
       user = await User.create({
         wxOpenId: res.data.openid,
+        source: platform,
       });
       isSignUp = true;
       // 插入示例数据
@@ -48,7 +60,7 @@ module.exports.login = async (request, reply) => {
     }
     const token = uuid.v4();
     await redis.set(token, JSON.stringify(user), 'EX', 28800);
-    await Token.create({ token, userId: user.wxOpenId, platform: 'wx_mp' });
+    await Token.create({ token, userId: user.wxOpenId, platform });
     return {
       token,
       isSignUp,

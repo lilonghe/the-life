@@ -18,6 +18,9 @@ const User = sequelize.define('user', {
   phone: {
     type: DataTypes.STRING
   },
+  source: {
+    type: DataTypes.STRING,
+  },
 }, { tableName: 'user', paranoid: true });
 User.sync()
 
